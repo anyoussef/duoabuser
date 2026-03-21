@@ -21,7 +21,6 @@
             git
           ];
 
-
           shellHook = ''
             exec zsh
           '';

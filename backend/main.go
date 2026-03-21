@@ -8,21 +8,10 @@ import (
 	"strings"
 
 	"duo-abuser/api"
-
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	err := godotenv.Load("../.env")
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
 	key := os.Getenv("RIOT_API_KEY")
-
-	if key == "" {
-		log.Fatal("RIOT_API_KEY not set")
-	}
 
 	reader := bufio.NewReader(os.Stdin)
 
@@ -35,8 +24,13 @@ func main() {
 	name = strings.TrimSpace(name)
 	tag = strings.TrimSpace(tag)
 
-	curr_summoner, err := api.GetSummoner(name, tag, key)
-	println(curr_summoner.Puuid)
-	println(curr_summoner.GameName)
-	println(curr_summoner.TagLine)
+	fmt.Print(name, tag)
+
+	summoner, err := api.GetSummoner(name, tag, key)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Name:", summoner.GameName)
+	fmt.Println("Tag:", summoner.TagLine)
 }
