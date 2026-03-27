@@ -96,5 +96,5 @@ curl "http://localhost:8080/api/duo?riotId=Faker%23NA1"
 - currently hardcoded to **NA** (americas routing). other regions would require changes to the api base urls in `backend/main.go`
 
 ## media
-![splash](media/splash)
-![search](media/search)
+![splash](media/splash.png)
+![search](media/search.png)
