@@ -94,3 +94,7 @@ curl "http://localhost:8080/api/duo?riotId=Faker%23NA1"
 - dev riot api keys expire every 24 hours — regenerate at [developer.riotgames.com](https://developer.riotgames.com) if you get 401 errors
 - dev keys are rate limited to 20 req/sec and 100 req/2min; the backend uses a concurrency semaphore to avoid bursting
 - currently hardcoded to **NA** (americas routing). other regions would require changes to the api base urls in `backend/main.go`
+
+## media
+![splash](media/splash)
+![search](media/search)
