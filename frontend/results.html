@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>duoabuser · results</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --base:     #24273a;
+    --mantle:   #1e2030;
+    --crust:    #181926;
+    --surface0: #363a4f;
+    --surface1: #494d64;
+    --surface2: #5b6078;
+    --overlay0: #6e738d;
+    --overlay1: #8087a2;
+    --text:     #cad3f5;
+    --subtext0: #a5adcb;
+    --lavender: #b7bdf8;
+    --green:    #a6da95;
+    --red:      #ed8796;
+    --mauve:    #c6a0f6;
+    --peach:    #f5a97f;
+    --yellow:   #eed49f;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    min-height: 100%;
+    background: var(--base);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 2px,
+      rgba(0,0,0,0.025) 2px, rgba(0,0,0,0.025) 4px
+    );
+    pointer-events: none; z-index: 100;
+  }
+
+  /* ── layout ── */
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* ── back link ── */
+  .back {
+    display: inline-block;
+    font-size: 0.72rem;
+    color: var(--overlay1);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    margin-bottom: 36px;
+    transition: color 0.15s;
+  }
+  .back:hover { color: var(--mauve); }
+
+  /* ── player header ── */
+  .player-header {
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 0.4s ease 0.05s forwards;
+  }
+
+  .player-name {
+    font-size: 1.9rem;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: 0.04em;
+  }
+
+  .player-tag {
+    color: var(--overlay1);
+    font-size: 1.2rem;
+  }
+
+  .player-sub {
+    font-size: 0.68rem;
+    color: var(--overlay0);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  /* ── section label ── */
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mauve);
+    margin-bottom: 14px;
+    opacity: 0;
+    animation: fadeUp 0.4s ease 0.15s forwards;
+  }
+
+  /* ── partners ── */
+  .partners {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 44px;
+    opacity: 0;
+    animation: fadeUp 0.4s ease 0.2s forwards;
+  }
+
+  .partner-chip {
+    background: var(--mantle);
+    border: 1px solid var(--surface1);
+    padding: 7px 14px;
+    font-size: 0.78rem;
+    color: var(--subtext0);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: border-color 0.15s;
+  }
+
+  .partner-chip:hover { border-color: var(--mauve); }
+
+  .partner-chip .pname { color: var(--mauve); }
+  .partner-chip .pgames { color: var(--overlay0); font-size: 0.68rem; }
+
+  .no-partners {
+    font-size: 0.75rem;
+    color: var(--overlay0);
+    margin-bottom: 44px;
+    opacity: 0;
+    animation: fadeUp 0.4s ease 0.2s forwards;
+  }
+
+  /* ── match list ── */
+  .match-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    opacity: 0;
+    animation: fadeUp 0.4s ease 0.28s forwards;
+  }
+
+  .match-card {
+    display: grid;
+    grid-template-columns: 3px 1fr;
+    background: var(--mantle);
+    border: 1px solid var(--surface0);
+    transition: border-color 0.15s;
+  }
+
+  .match-card:hover { border-color: var(--surface2); }
+
+  /* win/loss accent bar */
+  .match-bar { width: 3px; }
+  .win  .match-bar { background: var(--green); }
+  .loss .match-bar { background: var(--red); }
+
+  .match-inner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 13px 18px;
+  }
+
+  /* win/loss pill */
+  .wl {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    width: 34px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .win  .wl { color: var(--green); }
+  .loss .wl { color: var(--red); }
+
+  .champ {
+    font-size: 0.9rem;
+    color: var(--yellow);
+    min-width: 120px;
+    flex-shrink: 0;
+  }
+
+  .kda {
+    font-size: 0.82rem;
+    color: var(--subtext0);
+    min-width: 70px;
+    flex-shrink: 0;
+  }
+
+  /* spacer */
+  .spacer { flex: 1; }
+
+  /* duo badge */
+  .duo-badge {
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: var(--mauve);
+    background: rgba(198,160,246,0.1);
+    border: 1px solid rgba(198,160,246,0.25);
+    padding: 4px 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .no-data {
+    text-align: center;
+    color: var(--overlay0);
+    font-size: 0.8rem;
+    padding: 60px 0;
+  }
+
+  /* ── animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <a class="back" href="index.html">← back to search</a>
+
+  <div class="player-header" id="playerHeader"></div>
+
+  <div class="section-label" id="partnersLabel"></div>
+  <div id="partners"></div>
+
+  <div class="section-label" id="matchesLabel"></div>
+  <div class="match-list" id="matchList"></div>
+
+</div>
+
+<script>
+  const raw = sessionStorage.getItem('duoData');
+  if (!raw) {
+    window.location.href = 'index.html';
+  }
+
+  const data = JSON.parse(raw);
+  const [name, tag] = data.targetRiotId.split('#');
+
+  // ── player header ──
+  document.getElementById('playerHeader').innerHTML = `
+    <div class="player-name">${esc(name)}<span class="player-tag">#${esc(tag)}</span></div>
+    <div class="player-sub">last ${data.matches.length} ranked solo/duo games · NA</div>
+  `;
+
+  // ── frequent partners ──
+  const partnersLabel = document.getElementById('partnersLabel');
+  const partnersEl    = document.getElementById('partners');
+
+  partnersLabel.textContent = '// frequent duo partners';
+
+  if (data.frequentPartners && data.frequentPartners.length > 0) {
+    partnersEl.className = 'partners';
+    partnersEl.innerHTML = data.frequentPartners.map(p => `
+      <div class="partner-chip">
+        <span class="pname">${esc(p.riotId)}</span>
+        <span class="pgames">${p.gamesPlayed}g</span>
+      </div>
+    `).join('');
+  } else {
+    partnersEl.className = 'no-partners';
+    partnersEl.textContent = '// no recurring duo partners found in last ' + data.matches.length + ' games';
+  }
+
+  // ── match list ──
+  document.getElementById('matchesLabel').textContent = '// match history';
+
+  const matchList = document.getElementById('matchList');
+
+  if (!data.matches || data.matches.length === 0) {
+    matchList.innerHTML = `<div class="no-data">no matches found</div>`;
+  } else {
+    matchList.innerHTML = data.matches.map(m => {
+      const wl = m.win ? 'win' : 'loss';
+      const duoBadge = m.duoPartner
+        ? `<span class="duo-badge">duo · ${esc(m.duoPartner.riotId)}</span>`
+        : '';
+      return `
+        <div class="match-card ${wl}">
+          <div class="match-bar"></div>
+          <div class="match-inner">
+            <span class="wl">${m.win ? 'WIN' : 'LOSS'}</span>
+            <span class="champ">${esc(m.champion)}</span>
+            <span class="kda">${esc(m.kda)}</span>
+            <span class="spacer"></span>
+            ${duoBadge}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function esc(s) {
+    if (!s) return '';
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+</script>
+</body>
+</html>
